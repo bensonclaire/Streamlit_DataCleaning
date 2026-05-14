@@ -135,16 +135,6 @@ if uploaded_file is not None:
     file_name='StateHouse34.csv',
     mime='text/csv')
 
-else:
-    st.info("Please upload a CSV file to get started.")
-
-if uploaded_file is not None:
-    # Read the file into a Pandas DataFrame
-    adrian = pd.read_csv(uploaded_file)
-    
-    # Display the data in a table
-    st.subheader("Uploaded Data Preview")
-    st.dataframe(adrian)
 
     existing_zip_path ='2026StateSenateDistricts.zip'
     
@@ -256,3 +246,4 @@ if uploaded_file is not None:
 
 else:
     st.info("Please upload a CSV file to get started.")
+
