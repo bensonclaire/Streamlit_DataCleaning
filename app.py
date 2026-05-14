@@ -15,7 +15,7 @@ import os
 from shapely.geometry import Point, Polygon
 import shutil
 
-st.title("CSV Data Viewer")
+st.title("Jurisdiction Data Cleaning")
 
 uploaded_file = st.file_uploader("Choose a CSV file", type="csv")
 
