@@ -61,7 +61,9 @@ if uploaded_file is not None:
     options=gdf['DISTRICTNO'].unique()
     )
 
-    polygon_coords = gdf["geometry"]{selected_dept}
+    filtered = gdf.loc[gdf['DISTRICTNO'] == selected_dept]
+
+    polygon_coords = filtered["geometry"]
     poly = Polygon(polygon_coords)
 
     for i in range(len(adrian["Points"])):
