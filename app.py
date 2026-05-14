@@ -19,7 +19,12 @@ st.title("CSV Data Viewer")
 
 uploaded_file = st.file_uploader("Choose a CSV file", type="csv")
 
-if uploaded_file is not None:
+selected_dist = st.selectbox(
+    'Select Jusriscition Type', 
+    options=["State House", "State Senate"]
+    )
+
+if uploaded_file is not None and selected_dist=="State House":
     # Read the file into a Pandas DataFrame
     adrian = pd.read_csv(uploaded_file)
     
