@@ -4,6 +4,5 @@ geopandas==1.0.1
 plotly==5.22.0
 pyproj==3.7.2
 shapely==2.1.2
-fiona==1.10.1
 openpyxl==3.1.5
-matplotlib==3.10.9
+matplotlib==3.9.2
