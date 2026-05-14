@@ -55,7 +55,13 @@ if uploaded_file is not None:
         latlon.append(Point([adrian["Residence_Addresses_Longitude"][i], adrian["Residence_Addresses_Latitude"][i]]))
     
     adrian["Points"]=latlon
-    polygon_coords = gdf["geometry"][33]
+
+    selected_dept = st.selectbox(
+    'Select House District', 
+    options=gdf['DISTRICTNO'].unique()
+    )
+
+    polygon_coords = gdf["geometry"]{selected_dept}
     poly = Polygon(polygon_coords)
 
     for i in range(len(adrian["Points"])):
