@@ -62,9 +62,8 @@ if uploaded_file is not None:
     )
 
     filtered = gdf.loc[gdf['DISTRICTNO'] == selected_dept]
-
     polygon_coords = filtered["geometry"]
-    poly = Polygon(polygon_coords)
+    poly = filtered["geometry"].iloc[0]
 
     for i in range(len(adrian["Points"])):
         if poly.contains(adrian["Points"][i]):
