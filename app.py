@@ -138,7 +138,6 @@ if uploaded_file is not None and selected_dist=="State House":
     else:
         final_filename = custom_name
     
-    Use the variable in the download button
     st.download_button(
         label="Download data as CSV",
         data=adrian,
@@ -260,7 +259,6 @@ elif uploaded_file is not None and selected_dist=="State Senate":
     else:
         final_filename = custom_name
     
-    Use the variable in the download button
     st.download_button(
         label="Download data as CSV",
         data=adrian,
