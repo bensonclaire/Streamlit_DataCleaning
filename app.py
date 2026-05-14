@@ -158,6 +158,93 @@ if uploaded_file is not None:
         # 4. Read shapefile
         gdf = gpd.read_file(shp_path)
 
+    adrian = pd.read_csv(uploaded_file)    
+
+    latlon=[]
+    for i in range(len(adrian["Residence_Addresses_Latitude"])):
+        latlon.append(Point([adrian["Residence_Addresses_Longitude"][i], adrian["Residence_Addresses_Latitude"][i]]))
+    
+    adrian["Points"]=latlon
+
+    selected_dept = st.selectbox(
+    'Select House District', 
+    options=gdf['DISTRICTNO'].unique()
+    )
+
+    filtered = gdf.loc[gdf['DISTRICTNO'] == selected_dept]
+    polygon_coords = filtered["geometry"]
+    poly = filtered["geometry"].iloc[0]
+
+    for i in range(len(adrian["Points"])):
+        if poly.contains(adrian["Points"][i]):
+            pass
+        else:
+            adrian["Points"][i]=None
+
+    adrian = adrian.dropna(subset=['Points'])
+
+    # Make sure gdf is EPSG:4326
+    gdf = gdf.to_crs(epsg=4326)
+
+    # =========================
+    # CREATE MAP
+    # =========================
+    fig = px.choropleth_mapbox(
+        gdf,
+        geojson=gdf.geometry.__geo_interface__,
+        locations=gdf.index,
+        hover_name='DISTRICTNO',
+        hover_data=["DISTRICTNO"],
+        mapbox_style="carto-positron",
+        zoom=5,
+        center={
+            "lat": gdf.geometry.centroid.y.mean(),
+            "lon": gdf.geometry.centroid.x.mean()
+        },
+        opacity=0.5
+    )
+
+    # =========================
+    # ADD USER POINTS
+    # =========================
+    fig.add_trace(
+        go.Scattermapbox(
+            lat=adrian["Residence_Addresses_Latitude"],
+            lon=adrian["Residence_Addresses_Longitude"],
+            mode="markers",
+            marker=dict(
+                size=9,
+                color="blue"
+            ),
+            text=adrian.index,
+            name="Uploaded Points"
+        )
+    )
+
+    # =========================
+    # LAYOUT
+    # =========================
+    fig.update_layout(
+        mapbox_style="open-street-map",
+        margin={"r": 0, "t": 0, "l": 0, "b": 0},
+        height=700
+    )
+
+    # =========================
+    # SHOW MAP IN STREAMLIT
+    # =========================
+    st.plotly_chart(fig, use_container_width=True)
+
+    adrian=adrian.drop(columns=["Points"])
+
+    adrian = adrian.to_csv(index=False).encode('utf-8')
+    
+    st.download_button(
+    label="Download data as CSV",
+    data=adrian,
+    file_name='StateHouse34.csv',
+    mime='text/csv')
+
 else:
     st.info("Please upload a CSV file to get started.")
 
