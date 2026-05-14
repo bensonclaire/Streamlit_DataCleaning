@@ -134,8 +134,7 @@ if uploaded_file is not None:
     data=adrian,
     file_name='StateHouse34.csv',
     mime='text/csv')
-
-
+    
 else:
     st.info("Please upload a CSV file to get started.")
 
