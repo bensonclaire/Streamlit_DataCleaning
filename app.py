@@ -1,21 +1,3 @@
-import streamlit as st
-import pandas as pd
-import plotly.graph_objs as go
-import plotly.express as px
-import pandas as pd
-from pyproj import Transformer
-from pyproj import CRS 
-import geopandas as gpd
-import matplotlib.pyplot as plt
-import openpyxl
-import warnings
-import tempfile
-import zipfile
-import os
-from shapely.geometry import Point, Polygon
-import shutil
-
-
 st.title("CSV Data Viewer")
 
 uploaded_file = st.file_uploader("Choose a CSV file", type="csv")
