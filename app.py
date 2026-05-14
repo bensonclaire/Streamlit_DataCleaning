@@ -135,6 +135,29 @@ if uploaded_file is not None:
     file_name='StateHouse34.csv',
     mime='text/csv')
 
+    existing_zip_path ='2026StateHouseDistricts.zip'
+    
+    with tempfile.TemporaryDirectory() as tmpdir:
+
+        tmp_zip_path = os.path.join(tmpdir, "temp_copy.zip")
+        shutil.copy(existing_zip_path, tmp_zip_path)
+        
+        # 2. Extract zip
+        with zipfile.ZipFile(tmp_zip_path, 'r') as zip_ref:
+            zip_ref.extractall(tmpdir)
+            
+        # 3. Find the .shp file
+        shp_files = [file for file in os.listdir(tmpdir) if file.endswith('.shp')]
+        
+        if len(shp_files) == 0:
+            st.error("No .shp file found in ZIP.")
+            st.stop()
+            
+        shp_path = os.path.join(tmpdir, shp_files[0])
+        
+        # 4. Read shapefile
+        gdf = gpd.read_file(shp_path)
+
 else:
     st.info("Please upload a CSV file to get started.")
 
