@@ -131,11 +131,20 @@ if uploaded_file is not None and selected_dist=="State House":
 
     adrian = adrian.to_csv(index=False).encode('utf-8')
     
+    custom_name = st.text_input("Enter a name for your file:", value="StateHouse")
+
+    if not custom_name.endswith('.csv'):
+        final_filename = f"{custom_name}.csv"
+    else:
+        final_filename = custom_name
+    
+    Use the variable in the download button
     st.download_button(
-    label="Download data as CSV",
-    data=adrian,
-    file_name='StateHouse34.csv',
-    mime='text/csv')
+        label="Download data as CSV",
+        data=adrian,
+        file_name=final_filename,
+        mime='text/csv'
+    )
 
 elif uploaded_file is not None and selected_dist=="State Senate":
     # Read the file into a Pandas DataFrame
@@ -244,11 +253,20 @@ elif uploaded_file is not None and selected_dist=="State Senate":
 
     adrian = adrian.to_csv(index=False).encode('utf-8')
     
+    custom_name = st.text_input("Enter a name for your file:", value="StateSenate")
+
+    if not custom_name.endswith('.csv'):
+        final_filename = f"{custom_name}.csv"
+    else:
+        final_filename = custom_name
+    
+    Use the variable in the download button
     st.download_button(
-    label="Download data as CSV",
-    data=adrian,
-    file_name='StateHouse34.csv',
-    mime='text/csv')
+        label="Download data as CSV",
+        data=adrian,
+        file_name=final_filename,
+        mime='text/csv'
+    )
     
 else:
     st.info("Please upload a CSV file to get started.")
