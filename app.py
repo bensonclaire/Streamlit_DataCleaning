@@ -69,7 +69,7 @@ if uploaded_file is not None:
         if poly.contains(adrian["Points"][i]):
             pass
         else:
-            adrian["Points"][i]=None
+            adrian.loc[i, "Points"] = None
 
     adrian = adrian.dropna(subset=['Points'])
 
