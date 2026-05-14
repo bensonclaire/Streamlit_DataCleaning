@@ -13,15 +13,14 @@ import tempfile
 import zipfile
 import os
 from shapely.geometry import Point, Polygon
+import shutil
 
 
 st.title("CSV Data Viewer")
 
-# Create a file uploader widget for CSV files
 uploaded_file = st.file_uploader("Choose a CSV file", type="csv")
-uploaded_file2 = st.file_uploader("Choose a zipped shapefile", type="zip")
 
-if uploaded_file is not None and uploaded_file2 is not None:
+if uploaded_file is not None:
     # Read the file into a Pandas DataFrame
     adrian = pd.read_csv(uploaded_file)
     
@@ -29,31 +28,27 @@ if uploaded_file is not None and uploaded_file2 is not None:
     st.subheader("Uploaded Data Preview")
     st.dataframe(adrian)
 
+    existing_zip_path ='2026StateHouseDistricts.zip'
+    
     with tempfile.TemporaryDirectory() as tmpdir:
 
-        # Save uploaded zip
-        zip_path = os.path.join(tmpdir, "shapefile.zip")
-
-        with open(zip_path, "wb") as f:
-            f.write(uploaded_file2.getbuffer())
-
-        # Extract zip
-        with zipfile.ZipFile(zip_path, "r") as zip_ref:
+        tmp_zip_path = os.path.join(tmpdir, "temp_copy.zip")
+        shutil.copy(existing_zip_path, tmp_zip_path)
+        
+        # 2. Extract zip
+        with zipfile.ZipFile(tmp_zip_path, 'r') as zip_ref:
             zip_ref.extractall(tmpdir)
-
-        # Find the .shp file
-        shp_files = [
-            file for file in os.listdir(tmpdir)
-            if file.endswith(".shp")
-        ]
-
+            
+        # 3. Find the .shp file
+        shp_files = [file for file in os.listdir(tmpdir) if file.endswith('.shp')]
+        
         if len(shp_files) == 0:
             st.error("No .shp file found in ZIP.")
             st.stop()
-
+            
         shp_path = os.path.join(tmpdir, shp_files[0])
-
-        # Read shapefile
+        
+        # 4. Read shapefile
         gdf = gpd.read_file(shp_path)
 
     latlon=[]
